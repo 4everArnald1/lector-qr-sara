@@ -795,6 +795,16 @@ function mostrarResultado(data){
 
 function enviarID(id){
 
+if(estadoCursada!=="ABIERTA"){
+
+  document.getElementById("mensaje").className="rojo";
+
+  document.getElementById("mensaje").innerHTML =
+  "🔒 Cursada cerrada. No se permiten registros.";
+
+  return;
+
+}
 
 
 
