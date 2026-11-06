@@ -414,6 +414,7 @@ const URL_APPS_SCRIPT =
 
 let scanner;
 
+let estadoCursada = "";
 
 
 
@@ -461,7 +462,8 @@ document.getElementById("app").style.display="block";
 
 cargarContador();
 
-
+consultarEstadoCursada();
+  
 iniciarQR();
 
 
@@ -609,6 +611,32 @@ document.getElementById("clave").value="";
 
 
 
+function consultarEstadoCursada(){
+
+  fetch(URL_APPS_SCRIPT+"?estado=true")
+
+  .then(r=>r.json())
+
+  .then(data=>{
+
+    estadoCursada = data.estado;
+
+
+    if(data.estado==="ABIERTA"){
+
+      document.getElementById("mensaje").innerHTML =
+      "🟢 Cursada abierta";
+
+    }else{
+
+      document.getElementById("mensaje").innerHTML =
+      "🔴 Cursada cerrada";
+
+    }
+
+  });
+
+}
 
 
 
