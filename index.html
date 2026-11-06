@@ -924,43 +924,31 @@ document.getElementById("dni").value="";
 
 function iniciarQR(){
 
-
-
-
 scanner =
 new Html5QrcodeScanner(
-
-
 "lector",
-
-
 {
-
-
 fps:10,
-
-
 qrbox:320
-
-
 }
-
-
 );
-
-
-
-
 
 
 scanner.render(
+
 (textoQR)=>{
+
 
 enviarID(textoQR);
 
+
 },
+
 (error)=>{}
+
 );
+
+}
 
 
 
