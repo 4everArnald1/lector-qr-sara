@@ -843,7 +843,16 @@ mostrarResultado(data);
 
 function enviarDNI(){
 
+if(estadoCursada!=="ABIERTA"){
 
+  document.getElementById("mensaje").className="rojo";
+
+  document.getElementById("mensaje").innerHTML =
+  "🔒 Cursada cerrada. No se permiten registros.";
+
+  return;
+
+}
 
 
 const dni =
