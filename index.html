@@ -991,31 +991,37 @@ enviarID(textoQR);
 
 function nuevoEscaneo(){
 
+  if(scanner){
 
+    scanner.clear()
+    .then(()=>{
 
+      document.getElementById("lector").innerHTML="";
 
-document.getElementById("lector").innerHTML="";
+      document.getElementById("mensaje").innerHTML =
+      "Esperando QR...";
 
+      document.getElementById("mensaje").className="";
 
+      iniciarQR();
 
+    })
+    .catch(()=>{
 
-document.getElementById("mensaje").innerHTML =
-"Esperando QR...";
+      document.getElementById("lector").innerHTML="";
 
+      iniciarQR();
 
+    });
 
+  }else{
 
-document.getElementById("mensaje").className="";
+    iniciarQR();
 
-
-
-
-iniciarQR();
-
-
-
+  }
 
 }
+
 
 
 
