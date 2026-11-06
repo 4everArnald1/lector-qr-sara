@@ -712,82 +712,76 @@ document.getElementById("contador").innerHTML =
 function mostrarResultado(data){
 
 
-  const mensaje =
-    document.getElementById("mensaje");
+const mensaje =
+document.getElementById("mensaje");
 
 
-  if(data.presentesHoy!==undefined){
+if(data.presentesHoy!==undefined){
 
-
-    document.getElementById("contador").innerHTML =
-      "Presentes hoy: " + data.presentesHoy;
-
-
-  }
-
-
-
-
-  if(data.encontrado){
-
-
-    if(data.duplicado){
-
-
-      mensaje.className="amarillo";
-
-
-      mensaje.innerHTML =
-        "⚠️ Ya registrado hoy:<br>" + data.nombre;
-
-
-
-
-    }else{
-
-
-      mensaje.className="verde";
-
-
-      mensaje.innerHTML =
-        "✅ Presente:<br>" + data.nombre;
-
-
-    }
-
-
-
-
-  }else{
-
-
-    mensaje.className="rojo";
-
-
-    if(data.mensaje){
-
-
-      mensaje.innerHTML =
-        "🔒 " + data.mensaje;
-
-
-    }else{
-
-
-      mensaje.innerHTML =
-        "❌ No encontrado";
-
-
-    }
-
-
-  }
-
+document.getElementById("contador").innerHTML =
+"Presentes hoy: " + data.presentesHoy;
 
 }
 
 
 
+if(data.encontrado){
+
+
+if(data.duplicado){
+
+mensaje.className="amarillo";
+
+mensaje.innerHTML =
+"⚠️ Ya registrado hoy:<br>" + data.nombre;
+
+
+}else{
+
+mensaje.className="verde";
+
+mensaje.innerHTML =
+"✅ Presente:<br>" + data.nombre;
+
+}
+
+
+}else{
+
+
+mensaje.className="rojo";
+
+
+if(data.mensaje){
+
+mensaje.innerHTML =
+"🔒 " + data.mensaje;
+
+
+}else{
+
+mensaje.innerHTML =
+"❌ No encontrado";
+
+}
+
+
+}
+
+
+// LIMPIA EL RESULTADO DESPUÉS DE 3 SEGUNDOS
+
+setTimeout(function(){
+
+mensaje.className="";
+
+mensaje.innerHTML =
+"Esperando QR...";
+
+},3000);
+
+
+}
 
 
 
