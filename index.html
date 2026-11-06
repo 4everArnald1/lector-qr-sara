@@ -754,16 +754,26 @@ mensaje.className="rojo";
 
 if(data.mensaje){
 
-mensaje.innerHTML =
-"🔒 " + data.mensaje;
+  if(data.mensaje.includes("cerrada")){
 
+    mensaje.innerHTML =
+    "🔒 " + data.mensaje;
+
+  }else{
+
+    mensaje.innerHTML =
+    "❌ " + data.mensaje;
+
+  }
 
 }else{
 
-mensaje.innerHTML =
-"❌ No encontrado";
+  mensaje.innerHTML =
+  "❌ No encontrado";
 
 }
+
+
 
 
 }
