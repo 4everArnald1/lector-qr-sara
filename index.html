@@ -419,6 +419,10 @@ let scanner;
 
 let estadoCursada = "";
 
+let ultimoQR = "";
+let tiempoUltimoQR = 0;
+
+
 
 
 
@@ -939,6 +943,20 @@ scanner.render(
 (textoQR)=>{
 
 
+if(
+textoQR===ultimoQR &&
+(Date.now()-tiempoUltimoQR)<3000
+){
+
+return;
+
+}
+
+
+ultimoQR=textoQR;
+tiempoUltimoQR=Date.now();
+
+
 enviarID(textoQR);
 
 
@@ -948,13 +966,9 @@ enviarID(textoQR);
 
 );
 
-}
-
-
-
-
 
 }
+
 
 
 
