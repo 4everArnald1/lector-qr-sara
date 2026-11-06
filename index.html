@@ -327,6 +327,9 @@ nfail@fmed.uba.ar
 Presentes hoy: 0
 </div>
 
+<div id="estadoCursada">
+Verificando cursada...
+</div>
 
 
 
@@ -516,6 +519,7 @@ document.getElementById("app").style.display="block";
 
 cargarContador();
 
+consultarEstadoCursada();
 
 iniciarQR();
 
@@ -621,22 +625,31 @@ function consultarEstadoCursada(){
 
     estadoCursada = data.estado;
 
+    const cartel =
+    document.getElementById("estadoCursada");
+
 
     if(data.estado==="ABIERTA"){
 
-      document.getElementById("mensaje").innerHTML =
+      cartel.innerHTML =
       "🟢 Cursada abierta";
+
+      cartel.style.background="#c8e6c9";
+
 
     }else{
 
-      document.getElementById("mensaje").innerHTML =
+      cartel.innerHTML =
       "🔴 Cursada cerrada";
+
+      cartel.style.background="#ffcdd2";
 
     }
 
   });
 
 }
+
 
 
 
