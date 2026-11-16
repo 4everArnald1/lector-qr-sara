@@ -259,7 +259,7 @@ function consultarEstadoCursada() {
     .then(data => {
       estadoCursada = data.estado;
       const cartel = document.getElementById("estadoCursada");
-      const etiquetaCircuito = obtenerCircuitoActual() === "med" ? " [Medicina]" : " [General]";
+      const etiquetaCircuito = obtenerCircuitoActual() === "med" ? " [Medicina]" : " [Licenciaturas]";
 
       if (data.estado === "ABIERTA") {
         cartel.innerHTML = "🟢 Cursada abierta" + etiquetaCircuito;
