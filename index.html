@@ -1,1034 +1,398 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-
 <meta charset="UTF-8">
 <title>Control de asistencia</title>
 
-
 <script src="https://unpkg.com/html5-qrcode"></script>
 
-
 <style>
-
-
 * {
-box-sizing:border-box;
+  box-sizing: border-box;
 }
-
 
 body {
-font-family: Arial, sans-serif;
-text-align:center;
-margin:0;
-padding:10px;
-background:#eef2f5;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 10px;
+  background: #eef2f5;
 }
-
-
-
 
 .contenedor {
-
-
-width:100%;
-max-width:700px;
-min-height:100vh;
-margin:auto;
-background:white;
-border-radius:20px;
-padding:25px 15px;
-box-shadow:0 4px 15px rgba(0,0,0,0.18);
-
-
+  width: 100%;
+  max-width: 700px;
+  min-height: 100vh;
+  margin: auto;
+  background: white;
+  border-radius: 20px;
+  padding: 25px 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.18);
 }
-
-
-
 
 h2 {
-font-size:34px;
-margin:10px;
+  font-size: 34px;
+  margin: 10px;
 }
-
-
-
 
 h3 {
-font-size:26px;
-margin:20px;
+  font-size: 26px;
+  margin: 20px;
 }
-
-
-
 
 #contador {
-
-
-background:#1976d2;
-color:white;
-font-size:30px;
-font-weight:bold;
-padding:15px;
-border-radius:15px;
-margin:20px 0;
-
-
+  background: #1976d2;
+  color: white;
+  font-size: 30px;
+  font-weight: bold;
+  padding: 15px;
+  border-radius: 15px;
+  margin: 20px 0;
 }
 
-
-
+#estadoCursada {
+  font-size: 22px;
+  font-weight: bold;
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
 
 #lector {
-
-
-width:100%;
-max-width:420px;
-margin:auto;
-
-
+  width: 100%;
+  max-width: 420px;
+  margin: auto;
 }
-
-
-
 
 button {
-
-
-width:95%;
-max-width:400px;
-font-size:24px;
-font-weight:bold;
-padding:18px;
-margin:12px;
-border-radius:15px;
-border:none;
-background:#1976d2;
-color:white;
-
-
+  width: 95%;
+  max-width: 400px;
+  font-size: 24px;
+  font-weight: bold;
+  padding: 18px;
+  margin: 12px;
+  border-radius: 15px;
+  border: none;
+  background: #1976d2;
+  color: white;
 }
-
-
-
 
 input {
-
-
-width:95%;
-max-width:400px;
-font-size:26px;
-padding:18px;
-text-align:center;
-border-radius:15px;
-border:2px solid #888;
-
-
+  width: 95%;
+  max-width: 400px;
+  font-size: 26px;
+  padding: 18px;
+  text-align: center;
+  border-radius: 15px;
+  border: 2px solid #888;
 }
-
-
-
 
 hr {
-
-
-margin:30px 0;
-border:none;
-border-top:2px solid #ddd;
-
-
+  margin: 30px 0;
+  border: none;
+  border-top: 2px solid #ddd;
 }
-
-
-
 
 #mensaje,
 #mensajeLogin {
-
-
-margin-top:25px;
-font-size:30px;
-font-weight:bold;
-padding:20px;
-border-radius:15px;
-
-
+  margin-top: 25px;
+  font-size: 30px;
+  font-weight: bold;
+  padding: 20px;
+  border-radius: 15px;
 }
-
-
-
 
 .verde {
-
-
-background:#c8e6c9;
-color:#1b5e20;
-
-
+  background: #c8e6c9;
+  color: #1b5e20;
 }
-
-
-
 
 .amarillo {
-
-
-background:#fff3cd;
-color:#856404;
-
-
+  background: #fff3cd;
+  color: #856404;
 }
-
-
-
 
 .rojo {
-
-
-background:#ffcdd2;
-color:#b71c1c;
-
-
+  background: #ffcdd2;
+  color: #b71c1c;
 }
-
-
-
 
 #app {
-
-
-display:none;
-
-
+  display: none;
 }
-
-
-
 
 a {
-
-
-font-size:22px;
-
-
+  font-size: 22px;
 }
-
-
-
-
 </style>
-
-
 </head>
-
-
-
 
 <body>
 
-
 <!-- PANTALLA LOGIN -->
-
-
 <div id="login" class="contenedor">
+  <h2>🔐 Acceso docente</h2>
+  <h3>Sistema de asistencia</h3>
 
+  <input id="usuario" placeholder="Usuario">
+  <br>
+  <input id="clave" type="password" placeholder="Clave">
+  <br>
 
-<h2>🔐 Acceso docente</h2>
+  <button onclick="mostrarClave()">👁 Mostrar / ocultar clave</button>
+  <button onclick="ingresar()">Ingresar</button>
 
+  <div id="mensajeLogin"></div>
 
-<h3>
-Sistema de asistencia
-</h3>
-
-
-
-
-<input
-id="usuario"
-placeholder="Usuario">
-
-
-
-
-<br>
-
-
-
-
-<input
-id="clave"
-type="password"
-placeholder="Clave">
-
-
-
-
-<br>
-
-
-
-
-<button onclick="mostrarClave()">
-👁 Mostrar / ocultar clave
-</button>
-
-
-
-
-<button onclick="ingresar()">
-Ingresar
-</button>
-
-
-
-
-<div id="mensajeLogin"></div>
-
-
-
-
-<p>
-Soporte:
-<br>
-<a href="mailto:nfail@fmed.uba.ar">
-nfail@fmed.uba.ar
-</a>
-</p>
-
-
-
-
+  <p>
+    Soporte:
+    <br>
+    <a href="mailto:nfail@fmed.uba.ar">nfail@fmed.uba.ar</a>
+  </p>
 </div>
-
-
-
-
-
-
-
 
 <!-- APLICACIÓN -->
-
-
 <div id="app" class="contenedor">
+  <h2>📋 Control de asistencia</h2>
 
+  <div id="contador">Presentes hoy: 0</div>
+  <div id="estadoCursada">Verificando cursada...</div>
 
+  <h3>📷 Escanear QR</h3>
+  <div id="lector"></div>
 
+  <button onclick="nuevoEscaneo()">🔄 Nuevo escaneo</button>
 
-<h2>
-📋 Control de asistencia
-</h2>
+  <hr>
 
+  <h3>🪪 Carga manual por DNI</h3>
+  <input id="dni" type="number" placeholder="Ingrese DNI">
+  <br>
+  <button onclick="enviarDNI()">Registrar DNI</button>
 
+  <div id="mensaje">Esperando...</div>
 
-
-<div id="contador">
-Presentes hoy: 0
+  <button onclick="cerrarSesion()">🚪 Cerrar sesión</button>
 </div>
-
-<div id="estadoCursada">
-Verificando cursada...
-</div>
-
-
-
-<h3>
-📷 Escanear QR
-</h3>
-
-
-
-
-<div id="lector"></div>
-
-
-
-
-
-
-<button onclick="nuevoEscaneo()">
-🔄 Nuevo escaneo
-</button>
-
-
-
-
-<hr>
-
-
-
-
-
-
-<h3>
-🪪 Carga manual por DNI
-</h3>
-
-
-
-
-<input
-id="dni"
-type="number"
-placeholder="Ingrese DNI"
->
-
-
-
-
-<br>
-
-
-
-
-<button onclick="enviarDNI()">
-Registrar DNI
-</button>
-
-
-
-
-<div id="mensaje">
-Esperando...
-</div>
-
-
-
-
-<button onclick="cerrarSesion()">
-🚪 Cerrar sesión
-</button>
-
-
-
-
-</div>
-
 
 <script>
-
-
 const URL_APPS_SCRIPT =
 "https://script.google.com/macros/s/AKfycbzZQpqXxzOZ42upnAb1t8eBg7WSOCPknYqNMyumVAdpq_Z_u9T3tLx6pmaYOEon666LyQ/exec";
 
-
-
-
 let scanner;
-
 let estadoCursada = "";
-
 let ultimoQR = "";
 let tiempoUltimoQR = 0;
 
+function obtenerCircuitoActual() {
+  const params = new URLSearchParams(window.location.search);
+  const paramCircuito = (params.get("circuito") || "").toLowerCase().trim();
+  if (paramCircuito === "med") {
+    localStorage.setItem("circuitoSARA", "med");
+    return "med";
+  }
+  const guardado = (localStorage.getItem("circuitoSARA") || "").toLowerCase().trim();
+  if (guardado === "med") return "med";
 
+  const cursadaGuardada = (localStorage.getItem("cursadaActual") || "").toLowerCase();
+  if (cursadaGuardada.includes("med")) return "med";
 
-
-
-
-function ingresar(){
-
-
-let usuario =
-document.getElementById("usuario").value
-.toLowerCase()
-.trim();
-
-
-
-
-let clave =
-document.getElementById("clave").value.trim();
-
-
-
-
-
-
-if(usuario==="docentes" && clave==="fisio2026"){
-
-
-
-
-localStorage.setItem(
-"accesoDocente",
-"ok"
-);
-
-
-
-
-document.getElementById("login").style.display="none";
-
-
-document.getElementById("app").style.display="block";
-
-
-
-
-cargarContador();
-
-consultarEstadoCursada();
-  
-iniciarQR();
-
-
-
-
-
-
-}else{
-
-
-
-
-document.getElementById("mensajeLogin").innerHTML =
-"❌ Usuario o clave incorrectos";
-
-
-
-
+  return "";
 }
 
-
-}
-
-
-
-
-
-
-
-
-function verificarSesion(){
-
-
-
-
-if(
-localStorage.getItem("accesoDocente")==="ok"
-){
-
-
-
-
-document.getElementById("login").style.display="none";
-
-
-document.getElementById("app").style.display="block";
-
-
-
-
-cargarContador();
-
-consultarEstadoCursada();
-
-iniciarQR();
-
-
-
-
-}
-
-
-}
-
-
-
-
-
-
-
-
-function mostrarClave(){
-
-
-
-
-let campo =
-document.getElementById("clave");
-
-
-
-
-if(campo.type==="password"){
-
-
-campo.type="text";
-
-
-}else{
-
-
-campo.type="password";
-
-
-}
-
-
-
-
-}
-
-
-
-
-
-
-
-
-function cerrarSesion(){
-
-
-
-
-localStorage.removeItem(
-"accesoDocente"
-);
-
-
-
-
-if(scanner){
-
-
-scanner.clear();
-
-
-}
-
-
-
-
-document.getElementById("app").style.display="none";
-
-
-document.getElementById("login").style.display="block";
-
-
-
-
-document.getElementById("clave").value="";
-
-
-
-
-}
-
-
-
-function consultarEstadoCursada(){
-
-  fetch(URL_APPS_SCRIPT+"?estado=true")
-
-  .then(r=>r.json())
-
-  .then(data=>{
-
-    estadoCursada = data.estado;
-
-    const cartel =
-    document.getElementById("estadoCursada");
-
-
-    if(data.estado==="ABIERTA"){
-
-      cartel.innerHTML =
-      "🟢 Cursada abierta";
-
-      cartel.style.background="#c8e6c9";
-
-
-    }else{
-
-      cartel.innerHTML =
-      "🔴 Cursada cerrada";
-
-      cartel.style.background="#ffcdd2";
-
-    }
-
+function construirUrl(paramsObj) {
+  const circuito = obtenerCircuitoActual();
+  const url = new URL(URL_APPS_SCRIPT);
+  Object.keys(paramsObj).forEach(k => {
+    url.searchParams.set(k, paramsObj[k]);
   });
-
-}
-
-
-
-
-
-
-function cargarContador(){
-
-
-
-
-fetch(URL_APPS_SCRIPT+"?contador=true")
-
-
-
-
-.then(r=>r.json())
-
-
-
-
-.then(data=>{
-
-
-
-
-if(data.presentesHoy!==undefined){
-
-
-
-
-document.getElementById("contador").innerHTML =
-"Presentes hoy: "+data.presentesHoy;
-
-
-
-
-}
-
-
-
-
-});
-
-
-
-
-}
-
-
-
-
-
-
-
-
-function mostrarResultado(data){
-
-
-const mensaje =
-document.getElementById("mensaje");
-
-
-if(data.presentesHoy!==undefined){
-
-document.getElementById("contador").innerHTML =
-"Presentes hoy: " + data.presentesHoy;
-
-}
-
-
-
-if(data.encontrado){
-
-
-if(data.duplicado){
-
-mensaje.className="amarillo";
-
-mensaje.innerHTML =
-"⚠️ Ya registrado hoy:<br>" + data.nombre;
-
-
-}else{
-
-mensaje.className="verde";
-
-mensaje.innerHTML =
-"✅ Presente:<br>" + data.nombre;
-
-}
-
-
-}else{
-
-
-mensaje.className="rojo";
-
-
-if(data.mensaje){
-
-  if(data.mensaje.includes("cerrada")){
-
-    mensaje.innerHTML =
-    "🔒 " + data.mensaje;
-
-  }else{
-
-    mensaje.innerHTML =
-    "❌ " + data.mensaje;
-
+  if (circuito) {
+    url.searchParams.set("circuito", circuito);
   }
-
-}else{
-
-  mensaje.innerHTML =
-  "❌ No encontrado";
-
+  return url.toString();
 }
 
-
-
-
-}
-
-
-// LIMPIA EL RESULTADO DESPUÉS DE 3 SEGUNDOS
-
-setTimeout(function(){
-
-mensaje.className="";
-
-mensaje.innerHTML =
-"Esperando QR...";
-
-},3000);
-
-
-}
-
-
-
-
-
-
-
-
-
-function enviarID(id){
-
-if(estadoCursada!=="ABIERTA"){
-
-  document.getElementById("mensaje").className="rojo";
-
-  document.getElementById("mensaje").innerHTML =
-  "🔒 Cursada cerrada. No se permiten registros.";
-
-  return;
-
-}
-
-
-
-fetch(
-URL_APPS_SCRIPT+
-"?id="+encodeURIComponent(id)
-)
-
-
-
-
-.then(r=>r.json())
-
-
-
-
-.then(data=>{
-
-
-mostrarResultado(data);
-
-
-});
-
-
-
-
-}
-
-
-
-
-
-
-
-
-function enviarDNI(){
-
-if(estadoCursada!=="ABIERTA"){
-
-  document.getElementById("mensaje").className="rojo";
-
-  document.getElementById("mensaje").innerHTML =
-  "🔒 Cursada cerrada. No se permiten registros.";
-
-  return;
-
-}
-
-
-const dni =
-document.getElementById("dni").value;
-
-
-
-
-
-
-if(!dni){
-
-
-document.getElementById("mensaje").innerHTML =
-"Ingrese DNI";
-
-
-return;
-
-
-}
-
-
-
-
-
-
-fetch(
-URL_APPS_SCRIPT+
-"?dni="+encodeURIComponent(dni)
-)
-
-
-
-
-.then(r=>r.json())
-
-
-
-
-.then(data=>{
-
-
-
-
-mostrarResultado(data);
-
-
-
-
-document.getElementById("dni").value="";
-
-
-
-
-});
-
-
-
-
-}
-
-
-
-
-
-
-
-
-function iniciarQR(){
-
-scanner =
-new Html5QrcodeScanner(
-"lector",
-{
-fps:10,
-qrbox:320
-}
-);
-
-
-scanner.render(
-
-(textoQR)=>{
-
-
-if(
-textoQR===ultimoQR &&
-(Date.now()-tiempoUltimoQR)<3000
-){
-
-return;
-
-}
-
-
-ultimoQR=textoQR;
-tiempoUltimoQR=Date.now();
-
-
-enviarID(textoQR);
-
-
-},
-
-(error)=>{}
-
-);
-
-
-}
-
-
-
-
-
-
-
-
-
-function nuevoEscaneo(){
-
-  if(scanner){
-
-    scanner.clear()
-    .then(()=>{
-
-      document.getElementById("lector").innerHTML="";
-
-      document.getElementById("mensaje").innerHTML =
-      "Esperando QR...";
-
-      document.getElementById("mensaje").className="";
-
-      iniciarQR();
-
-    })
-    .catch(()=>{
-
-      document.getElementById("lector").innerHTML="";
-
-      iniciarQR();
-
-    });
-
-  }else{
-
+function ingresar() {
+  let usuario = document.getElementById("usuario").value.toLowerCase().trim();
+  let clave = document.getElementById("clave").value.trim();
+
+  if (usuario === "docentes" && clave === "fisio2026") {
+    localStorage.setItem("accesoDocente", "ok");
+    document.getElementById("login").style.display = "none";
+    document.getElementById("app").style.display = "block";
+    cargarContador();
+    consultarEstadoCursada();
     iniciarQR();
-
+  } else {
+    document.getElementById("mensajeLogin").innerHTML = "❌ Usuario o clave incorrectos";
   }
-
 }
 
+function verificarSesion() {
+  if (localStorage.getItem("accesoDocente") === "ok") {
+    document.getElementById("login").style.display = "none";
+    document.getElementById("app").style.display = "block";
+    cargarContador();
+    consultarEstadoCursada();
+    iniciarQR();
+  }
+}
 
+function mostrarClave() {
+  let campo = document.getElementById("clave");
+  campo.type = (campo.type === "password") ? "text" : "password";
+}
 
+function cerrarSesion() {
+  localStorage.removeItem("accesoDocente");
+  if (scanner) {
+    scanner.clear();
+  }
+  document.getElementById("app").style.display = "none";
+  document.getElementById("login").style.display = "block";
+  document.getElementById("clave").value = "";
+}
 
+function consultarEstadoCursada() {
+  fetch(construirUrl({ estado: "true" }))
+    .then(r => r.json())
+    .then(data => {
+      estadoCursada = data.estado;
+      const cartel = document.getElementById("estadoCursada");
+      const etiquetaCircuito = obtenerCircuitoActual() === "med" ? " [Medicina]" : " [General]";
 
+      if (data.estado === "ABIERTA") {
+        cartel.innerHTML = "🟢 Cursada abierta" + etiquetaCircuito;
+        cartel.style.background = "#c8e6c9";
+      } else {
+        cartel.innerHTML = "🔴 Cursada cerrada" + etiquetaCircuito;
+        cartel.style.background = "#ffcdd2";
+      }
+    });
+}
 
+function cargarContador() {
+  fetch(construirUrl({ contador: "true" }))
+    .then(r => r.json())
+    .then(data => {
+      if (data.presentesHoy !== undefined) {
+        document.getElementById("contador").innerHTML = "Presentes hoy: " + data.presentesHoy;
+      }
+    });
+}
+
+function mostrarResultado(data) {
+  const mensaje = document.getElementById("mensaje");
+
+  if (data.presentesHoy !== undefined) {
+    document.getElementById("contador").innerHTML = "Presentes hoy: " + data.presentesHoy;
+  }
+
+  if (data.encontrado) {
+    if (data.duplicado) {
+      mensaje.className = "amarillo";
+      mensaje.innerHTML = "⚠️ Ya registrado hoy:<br>" + data.nombre;
+    } else {
+      mensaje.className = "verde";
+      mensaje.innerHTML = "✅ Presente:<br>" + data.nombre;
+    }
+  } else {
+    mensaje.className = "rojo";
+    if (data.mensaje) {
+      if (data.mensaje.includes("cerrada")) {
+        mensaje.innerHTML = "🔒 " + data.mensaje;
+      } else {
+        mensaje.innerHTML = "❌ " + data.mensaje;
+      }
+    } else {
+      mensaje.innerHTML = "❌ No encontrado";
+    }
+  }
+
+  setTimeout(function() {
+    mensaje.className = "";
+    mensaje.innerHTML = "Esperando QR...";
+  }, 3000);
+}
+
+function enviarID(id) {
+  if (estadoCursada !== "ABIERTA") {
+    document.getElementById("mensaje").className = "rojo";
+    document.getElementById("mensaje").innerHTML = "🔒 Cursada cerrada. No se permiten registros.";
+    return;
+  }
+
+  fetch(construirUrl({ id: id }))
+    .then(r => r.json())
+    .then(data => {
+      mostrarResultado(data);
+    });
+}
+
+function enviarDNI() {
+  if (estadoCursada !== "ABIERTA") {
+    document.getElementById("mensaje").className = "rojo";
+    document.getElementById("mensaje").innerHTML = "🔒 Cursada cerrada. No se permiten registros.";
+    return;
+  }
+
+  const dni = document.getElementById("dni").value;
+  if (!dni) {
+    document.getElementById("mensaje").innerHTML = "Ingrese DNI";
+    return;
+  }
+
+  fetch(construirUrl({ dni: dni }))
+    .then(r => r.json())
+    .then(data => {
+      mostrarResultado(data);
+      document.getElementById("dni").value = "";
+    });
+}
+
+function iniciarQR() {
+  scanner = new Html5QrcodeScanner(
+    "lector",
+    {
+      fps: 10,
+      qrbox: 320
+    }
+  );
+
+  scanner.render(
+    (textoQR) => {
+      if (textoQR === ultimoQR && (Date.now() - tiempoUltimoQR) < 3000) {
+        return;
+      }
+      ultimoQR = textoQR;
+      tiempoUltimoQR = Date.now();
+      enviarID(textoQR);
+    },
+    (error) => {}
+  );
+}
+
+function nuevoEscaneo() {
+  if (scanner) {
+    scanner.clear()
+      .then(() => {
+        document.getElementById("lector").innerHTML = "";
+        document.getElementById("mensaje").innerHTML = "Esperando QR...";
+        document.getElementById("mensaje").className = "";
+        iniciarQR();
+      })
+      .catch(() => {
+        document.getElementById("lector").innerHTML = "";
+        iniciarQR();
+      });
+  } else {
+    iniciarQR();
+  }
+}
 
 verificarSesion();
-
-
-
-
 </script>
-
-
-
 
 </body>
 </html>
+
